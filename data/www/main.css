@@ -1,0 +1,93 @@
+* {
+	list-style-type: none;
+	font-weight: 400;
+	box-sizing: border-box;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	font-size: 12px;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
+	line-height: 1.5;
+	background-color: #f1f1f1;
+}
+
+input, select {
+	width: 65px;
+	text-align: right;
+}
+
+input[type="checkbox"] {
+	width:30px;
+}
+
+button {
+	margin: 5px;
+}
+
+.kolom {
+	display: flex;
+	gap: 30px;
+}
+
+.buttonbar table {
+	background-color:#f0f0f0;
+	border-collapse: collapse;
+}
+
+.buttonbar td {
+	border: 1px solid #ffffff;
+	padding: 4px;
+}
+
+#dummy {
+	display:none;
+}
+
+.waveformdiv {
+	display: flex;
+	gap:20px;
+}
+
+.voltages table {
+	background-color: #f0f0f0;
+	border-collapse: collapse;
+}
+
+.voltages td {
+	border: 1px solid #ffffff;
+	padding: 4px;
+	text-align: right;
+}
+
+.groupheader {
+	font-size: 20px;
+	padding-top: 30px;
+}
+
+.groupfooter {
+	display: flex;
+	padding-top: 10px;
+	padding-left: 5px;
+}
+
+.repeat {
+	padding-top: 10px;
+}
+
+.luttable {
+	background-color: #f0f0f0;
+}
+
+.luttable td {
+	border: 1px solid #ffffff;
+	padding: 4px;
+}
+
+.graph {
+	padding-top: 25px;
+}

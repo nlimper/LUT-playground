@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+
+	<title>LUT playground</title>
+	<link rel="stylesheet" href="main.css" type="text/css" />
+	<link rel="icon" href="data:,">
+	<script src="main.js"></script>
+</head>
+
+<body>
+
+	<div class="kolom">
+		<div class="voltages">
+			<table>
+				<tr>
+					<td>VSS</td>
+					<td>0</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>VSL</td>
+					<td id="vsl"></td>
+					<td><select id="vsloptions"></select> V</td>
+				</tr>
+				<tr>
+					<td>VSH1</td>
+					<td id="vsh1"></td>
+					<td><select id="vsh1options"></select> V</td>
+				</tr>
+				<tr>
+					<td>VSH2</td>
+					<td id="vsh2"></td>
+					<td><select id="vsh2options"></select> V</td>
+				</tr>
+				<tr>
+					<td>VGH</td>
+					<td id="vgh"></td>
+					<td><select id="vghoptions"></select> V</td>
+				</tr>
+				<tr>
+					<td>gate freq</td>
+					<td id="freq"></td>
+					<td><select id="freqoptions"></select> Hz</td>
+				</tr>
+			</table>
+		</div>
+
+		<div class="buttonbar">
+			<span>testpattern:</span>
+		
+			default waveform<br>
+			<button value="1">white</button>
+			<button value="2">pattern 1</button>
+			<button value="3">pattern 2</button>
+			<button value="4">lorem ipsum</button>
+			<button value="5">random text</button><br>
+		
+			userdefined waveform:<br>
+			<button value="-1">white</button>
+			<button value="-2">pattern 1</button>
+			<button value="-3">pattern 2</button>
+			<button value="-4">lorem ipsum</button>
+			<button value="-5">random text</button><br>
+		
+			<span>waveforms:</span>
+			<button id="loadwaveform">fetch default waveform</button>
+			<button value="" class="run">run waveform to screen</button>
+		</div>
+
+	</div>
+
+	<div class="groups">
+		<div class="waveformdiv" id="dummy">
+			<div>
+				<div class="groupheader">
+					<input type="checkbox" value="1" checked><span class="grouptitle">group 0</span>
+					<button class="solo run">run solo</button>
+				</div>
+				<table class="luttable">
+					<tr class="letheader">
+						<td></td>
+						<td>phase A</td>
+						<td>phase B</td>
+						<td>phase C</td>
+						<td>phase D</td>
+					</tr>
+				</table>
+				<div class="groupfooter">
+					<div class="repeat">repeat: <span class="repeatval"></span></div>
+					<div class="stats">total time: <span class="timeframe"></span> frames, <span class="timesec"></span> sec</div>
+				</div>
+			</div>
+			<div>
+				<canvas class="graph">
+			</div>
+		</div>
+	</div>
+	
+	<ul id="messages" class="messages">
+	</ul>
+
+</body>
+</html>
