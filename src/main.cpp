@@ -4,17 +4,21 @@
 #include "web.h"
 #include "epd.h"
 #include "7segment.h"
+#include "taskqueue.h"
 
 //const char *ssid = "*****";
 //const char *password = "*****";
 
-int runTask = 0;
+extern QueueHandle_t taskQueue;
+extern TM1637TinyDisplay6 led;
 
 void setup() {
 
 	Serial.begin(115200);
+	taskQueue = xQueueCreate(10, sizeof(queueMessage));
 
 	initLED();
+	led.showString("wifi..");
 
 	WiFi.mode(WIFI_STA);
 	WiFi.begin(ssid, password);
@@ -26,12 +30,15 @@ void setup() {
 	Serial.print("IP Address: ");
 	Serial.println(WiFi.localIP());
 
+	led.showString("web...");
 	initWeb();
+	led.showString("epd...");
 	initEpd();
+	led.showString("ready");
+
+	xTaskCreate(runTask, "Taskqueue", 10000, NULL, 2, NULL);
 }
 
 void loop() {
-	runTask = checkEPDtask(runTask);
-
 	vTaskDelay(100 / portTICK_PERIOD_MS);
 }

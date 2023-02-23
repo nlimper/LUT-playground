@@ -93,3 +93,77 @@ void EPDraw::readData(uint8_t cmd, uint8_t *data, uint16_t n) {
 	pinMode(_sck, INPUT);
 	SPI.begin();
 }
+
+void EPDraw::writeImage2(const uint8_t *black, const uint8_t *color, int16_t x, int16_t y, int16_t w, int16_t h, bool invert, bool mirror_y, bool pgm) {
+	int16_t wb = (w + 7) / 8;										// width bytes, bitmaps are padded
+	x -= x % 8;														// byte boundary
+	w = wb * 8;														// byte boundary
+	int16_t x1 = x < 0 ? 0 : x;										// limit
+	int16_t y1 = y < 0 ? 0 : y;										// limit
+	int16_t w1 = x + w < int16_t(WIDTH) ? w : int16_t(WIDTH) - x;	// limit
+	int16_t h1 = y + h < int16_t(HEIGHT) ? h : int16_t(HEIGHT) - y; // limit
+	int16_t dx = x1 - x;
+	int16_t dy = y1 - y;
+	w1 -= dx;
+	h1 -= dy;
+	if ((w1 <= 0) || (h1 <= 0)) return;
+
+	//_setPartialRamArea(x1, y1, w1, h1);
+	_writeCommand(0x44);
+	_writeData(x1 / 8);
+	_writeData((x1 + w1 - 1) / 8);
+	_writeCommand(0x45);
+	_writeData(y1 % 256);
+	_writeData(y1 / 256);
+	_writeData((y1 + h1 - 1) % 256);
+	_writeData((y1 + h1 - 1) / 256);
+	_writeCommand(0x4e);
+	_writeData(x1 / 8);
+	_writeCommand(0x4f);
+	_writeData(y1 % 256);
+	_writeData(y1 / 256);
+
+	_writeCommand(0x24);
+	for (int16_t i = 0; i < h1; i++) {
+		for (int16_t j = 0; j < w1 / 8; j++) {
+			uint8_t data = 0xFF;
+			if (black) {
+				// use wb, h of bitmap for index!
+				int16_t idx = mirror_y ? j + dx / 8 + ((h - 1 - (i + dy))) * wb : j + dx / 8 + (i + dy) * wb;
+				if (pgm) {
+#if defined(__AVR) || defined(ESP8266) || defined(ESP32)
+					data = pgm_read_byte(&black[idx]);
+#else
+					data = black[idx];
+#endif
+				} else {
+					data = black[idx];
+				}
+				if (invert) data = ~data;
+			}
+			_writeData(data);
+		}
+	}
+	_writeCommand(0x26);
+	for (int16_t i = 0; i < h1; i++) {
+		for (int16_t j = 0; j < w1 / 8; j++) {
+			uint8_t data = 0xFF;
+			if (color) {
+				// use wb, h of bitmap for index!
+				int16_t idx = mirror_y ? j + dx / 8 + ((h - 1 - (i + dy))) * wb : j + dx / 8 + (i + dy) * wb;
+				if (pgm) {
+#if defined(__AVR) || defined(ESP8266) || defined(ESP32)
+					data = pgm_read_byte(&color[idx]);
+#else
+					data = color[idx];
+#endif
+				} else {
+					data = color[idx];
+				}
+				if (invert) data = ~data;
+			}
+			_writeData(~data);
+		}
+	}
+	delay(1); // yield() to avoid WDT on ESP8266 and ESP32
+}

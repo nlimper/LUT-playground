@@ -12,9 +12,16 @@
 </head>
 
 <body>
-
+	<div class="head">LUT playground
+		<div class="warning"><span>&#9888;</span> Warning: experimenting with waveforms may destroy or damage your epaper display. Be careful.</div>
+	</div>
 	<div class="kolom">
 		<div class="voltages">
+			<div>
+				<select id="templist"></select>
+				<button id="loadwaveform">get OTP waveform</button>
+				<span class="tooltip-icon">?</span><span class="tooltip-text">Gets the default factory-set waveform for the selected temperature.<br>Compare different temperature settings to see the effect on the waveforms.<br>On 2.9" BWR displays, there are different waveforms for<br> -20&#x2192;2, 4&#x2192;6, 8&#x2192;10, 12&#x2192;14, 16&#x2192;20, 22&#x2192;24, 26&#x2192;80 and 80+ &deg;C.</span>
+			</div>
 			<table>
 				<tr>
 					<td>VSS</td>
@@ -49,36 +56,51 @@
 			</table>
 		</div>
 
-		<div class="buttonbar">
-			<span>testpattern:</span>
-		
-			default waveform<br>
-			<button value="1">white</button>
-			<button value="2">pattern 1</button>
-			<button value="3">pattern 2</button>
-			<button value="4">lorem ipsum</button>
+		<div class="patternbtn">
+			<div>set testpattern: 
+				<span class="tooltip-icon">?</span><span class="tooltip-text">Set the testpattern to write to the display.<br>pattern 1: vertical pattern of 4 colors<br>pattern 2: horizontal pattern of 4 colors<br>By alternating pattern 1 and pattern 2, you can observe all possible color changes.</span>
+			</div>
+			<button value="1">white</button><br>
+			<button value="2">pattern 1</button> 4 colors V<br>
+			<button value="3">pattern 2</button> 4 colors H<br>
+			<button value="4">lorem ipsum</button><br>
 			<button value="5">random text</button><br>
-		
-			userdefined waveform:<br>
-			<button value="-1">white</button>
-			<button value="-2">pattern 1</button>
-			<button value="-3">pattern 2</button>
-			<button value="-4">lorem ipsum</button>
-			<button value="-5">random text</button><br>
-		
-			<span>waveforms:</span>
-			<button id="loadwaveform">fetch default waveform</button>
-			<button value="" class="run">run waveform to screen</button>
 		</div>
+	
+		<div class="runbtn">
+			<div>update screen using:</div>
+			<button value="0">&#9654; default waveform</button> 
+			<span class="tooltip-icon">?</span><span class="tooltip-text">Displays the selected pattern on the display, using factory set waveform,<br> without changing the custom waveform. Useful for starting with a freshly written image.</span><br>
+			<button value="1">&#9654; custom waveform</button>
+			<span class="tooltip-icon">?</span><span class="tooltip-text">Displays the selected pattern using the custom set waveform</span><br>
+			<button value="2">&#9654; incremental</button>
+			<span class="tooltip-icon">?</span><span class="tooltip-text">Loads the black channel of the previously displayed pattern to the red channel,<br>and loads the currently selected pattern to the black channel.<br>Useful to test waveforms for incremental/partial display of patterns:<br>LUT 0: white to white<br>LUT 1: white to black<br>LUT 2: black to white<br>LUT 3: black to black<br></span><br>
+			<br>
+			total update time: <span id="totalupdatetime"></span> sec.<br>
+			<!--&sum;C: <span id="sumc"></span><br>-->
+		</div>
+		
+		<div class="saveload">
+			<input type="text" value="" id="savename"> <button id="save">save</button>
+			<span class="tooltip-icon">?</span><span class="tooltip-text">Saves the currently edited waveform. Enter the name in the box to the left. <br>The waveforms are only saved locally, so they will be lost after refreshing the page.</span>
+			<br>
+			<select id="savedlist" size=8></select><br>
+			<button id="exportbtn">export waveform</button><span class="tooltip-icon">?</span><span class="tooltip-text">Shows the waveform as a series of bytes, to be used in your software.
+		</div>
+	</div>
 
+	<div class="export">
+		<textarea id="exportbytes"></textarea><button onclick="this.parentNode.style.display='none'">X</button>
 	</div>
 
 	<div class="groups">
 		<div class="waveformdiv" id="dummy">
 			<div>
 				<div class="groupheader">
-					<input type="checkbox" value="1" checked><span class="grouptitle">group 0</span>
-					<button class="solo run">run solo</button>
+					<span class="grouptitle">group 0</span>
+					<button class="solo">&#9654; run solo</button>
+					<span class="tooltip-icon">?</span><span class="tooltip-text">Solo displays the selected pattern, using only this group.</span>
+					<button class="disable" data-disabled="0">disable group</button>
 				</div>
 				<table class="luttable">
 					<tr class="letheader">
@@ -90,12 +112,16 @@
 					</tr>
 				</table>
 				<div class="groupfooter">
-					<div class="repeat">repeat: <span class="repeatval"></span></div>
+					<div class="repeat">repeat: <span class="repeatval"></span>
+						<span class="tooltip-icon">?</span><span class="tooltip-text">set repeat = 0 to run phase A-D only once. repeat = 1 runs
+							it twice, etc.</span>
+					</div>
 					<div class="stats">total time: <span class="timeframe"></span> frames, <span class="timesec"></span> sec</div>
 				</div>
 			</div>
 			<div>
-				<canvas class="graph">
+				<canvas class="graph"></canvas>
+				<span class="tooltip-icon">?</span><span class="tooltip-text">The graph shows the voltage difference between the common electrode (VCOM) and the pixel electrodes, for each of the four possible color combinations</span>
 			</div>
 		</div>
 	</div>
@@ -103,5 +129,7 @@
 	<ul id="messages" class="messages">
 	</ul>
 
+	<div class="footer">LUT playground is created by Nic Limper. If you like it and find it useful, please consider <a href="https://ko-fi.com/nicli" target="_new">buying my a coffee on https://ko-fi.com/nicli</a>. Sourcecode on github: <a href="https://github.com/nlimper/LUT-playground">https://github.com/nlimper/LUT-playground</a>.
+	</div>
 </body>
 </html>

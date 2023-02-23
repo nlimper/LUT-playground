@@ -27,21 +27,76 @@ input[type="checkbox"] {
 
 button {
 	margin: 5px;
+	border: 0px;
+	background-color: #d0d0d0;
+	padding: 3px 10px;
+	cursor: pointer;
+}
+button:hover {
+	background-color: #a0a0a0;}
+
+.head {
+	font-size: 30px;
+	padding-bottom: 15px;
+}
+
+.warning {
+	float: right;
+	font-size: 12px;
+	background-color: #ffffc0;
+	color: red;
+	padding: 3px;
+	border: 1px dashed red;
+	width: 400px;
+}
+
+.warning span {
+	font-size: 30px;
+	line-height: 30px;
+	display: block;
+	float: left;
+	padding-right: 10px;
 }
 
 .kolom {
 	display: flex;
-	gap: 30px;
+	gap: 10px;
 }
 
-.buttonbar table {
-	background-color:#f0f0f0;
-	border-collapse: collapse;
+.patternbtn, .runbtn, .saveload {
+	padding: 5px 10px;
+	border-left: 1px solid #c0c0c0;
 }
 
-.buttonbar td {
-	border: 1px solid #ffffff;
-	padding: 4px;
+#savename {
+	width: 85px;
+}
+
+#savedlist {
+	width: 150px;
+}
+
+#exportbtn {
+	margin-left: 0px;
+}
+
+.export {
+	padding-top: 10px;
+	display: none;
+}
+
+.export textarea {
+	width: 400px;
+	height: 240px;
+}
+
+.export button {
+	vertical-align: top;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	padding: 0;
+	margin: 0 5px;
 }
 
 #dummy {
@@ -51,11 +106,15 @@ button {
 .waveformdiv {
 	display: flex;
 	gap:20px;
+	border-top: 1px solid #c0c0c0;
+	padding-bottom: 10px;
+	margin-top: 10px;
 }
 
 .voltages table {
 	background-color: #f0f0f0;
 	border-collapse: collapse;
+	width: 200px;
 }
 
 .voltages td {
@@ -64,19 +123,24 @@ button {
 	text-align: right;
 }
 
+.voltages td:last-child {
+	text-align: left;
+}
+
 .groupheader {
 	font-size: 20px;
-	padding-top: 30px;
+	padding-top: 15px;
 }
 
 .groupfooter {
 	display: flex;
 	padding-top: 10px;
 	padding-left: 5px;
+	align-items: flex-end;
 }
 
 .repeat {
-	padding-top: 10px;
+	padding-right: 10px;
 }
 
 .luttable {
@@ -84,10 +148,44 @@ button {
 }
 
 .luttable td {
-	border: 1px solid #ffffff;
-	padding: 4px;
+	/* border: 1px solid #ffffff; */
+	padding: 3px;
+	white-space: nowrap;
 }
 
 .graph {
 	padding-top: 25px;
+}
+
+.tooltip-icon {
+	cursor: help;
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	border: 1px solid #808080;
+	text-align: center;
+	line-height: 14px;
+	font-weight: bold;
+	font-size: 10px;
+}
+
+.tooltip-text {
+	display: none;
+	position: absolute;
+	z-index: 1;
+	padding: 5px;
+	background-color: #FFcF70;
+	color: #000000;
+	border: 1px solid #D0A050;
+	border-radius: 2px;
+	font-size: 12px;
+}
+
+.tooltip-icon:hover+.tooltip-text {
+	display: block;
+}
+
+.footer {
+	padding-bottom:30px;
 }

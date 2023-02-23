@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "ArduinoJson.h"
 
 #define CMD_DRV_OUTPUT_CTRL 0x01
 #define CMD_SOFT_START_CTRL 0x0C
@@ -44,11 +45,14 @@
 #define TEST_LOREMIPSUM 4
 #define TEST_RANDOMTEXT 5
 
-extern int runTask;
-
 void initEpd();
-void readLUT(struct waveform *waveform);
+void readLUT(struct waveform *waveform, int8_t temperature);
+void writeLut(struct waveform *wf);
+void useLut(struct waveform *wf);
 void drawCentreString(const String &buf, int x, int y);
 String wave2json(struct waveform *wf);
-void displayWithProgress();
-int checkEPDtask(int patternid);
+waveform json2wave(const JsonObject &doc);
+void displayWithProgress(uint8_t cmd);
+void displaySolo(uint8_t sologroup);
+uint8_t sendPattern(uint8_t patternid);
+int getFrequency(int dummyline, int gatewidth);
