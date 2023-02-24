@@ -27,7 +27,9 @@ Connect the display as follows:
 | CLK    | 13 |
 | DIO    | 15 |
 
-![hardware](/extra/hardware.jpg?raw=true "Hardware")
+click the image below for a video
+
+[![hardware](/extra/hardware.jpg?raw=true "Hardware")](https://youtu.be/tAYy6mK-uXM)
 
 ## Software
 
